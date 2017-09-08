@@ -1,6 +1,13 @@
 {
     "name": "jk-plugin/plugin-name",
-    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-0": {
+            "Aloo\\WordPress\\Installer": "installer/"
+        }
+    },
+    "scripts": {
+        "post-package-install": "WordPressPlugin::install"
+    },
     "extra": {
         "installer-paths": {
             "plugin/": ["type:wordpress-plugin"]
