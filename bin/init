@@ -4,7 +4,12 @@
 # Config
 ########################
 
+SITE_HOME=http://localhost:8080
 DEVELOPMENT_ROOT=./.development
+SITE_DIR=site
+DATA_DIR=data
+SITE_PATH=$DEVELOPMENT_ROOT/$SITE_DIR
+DATA_PATH=$DEVELOPMENT_ROOT/$DATA_DIR
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -17,8 +22,8 @@ NC='\033[0m'
 echo -e "${BLUE}Creating development environemnt directories in ${DEVELOPMENT_ROOT}${NC}"
 
 mkdir $DEVELOPMENT_ROOT
-mkdir $DEVELOPMENT_ROOT/site
-mkdir $DEVELOPMENT_ROOT/data
+mkdir $SITE_PATH
+mkdir $DATA_PATH
 
 # 2. ###################
 # Clone Bedrock
@@ -26,7 +31,7 @@ mkdir $DEVELOPMENT_ROOT/data
 
 echo -e "${BLUE}Cloning Bedrock repository${NC}"
 
-git clone --depth=1 --branch=master git@github.com:roots/bedrock.git $DEVELOPMENT_ROOT/site
+git clone --depth=1 --branch=master git@github.com:roots/bedrock.git $SITE_PATH
 
 # 3. ###################
 # Create .env file
@@ -34,7 +39,19 @@ git clone --depth=1 --branch=master git@github.com:roots/bedrock.git $DEVELOPMEN
 
 echo -e "${BLUE}Generating site config (.env)${NC}"
 
-sed "s/# DB_HOST=localhost/DB_HOST=mysql/" $DEVELOPMENT_ROOT/site/.env.example | tee $DEVELOPMENT_ROOT/site/.env
+# Set DB_HOST
+sed "s/# DB_HOST=localhost/DB_HOST=mysql/" $SITE_PATH/.env.example | tee $SITE_PATH/.env
+# Set WP_HOME
+WP_HOME=$(sed 's|/|\\/|g' <<< $SITE_HOME)
+sed "s/WP_HOME=http:\/\/example.com/WP_HOME=${WP_HOME}/" $SITE_PATH/.env | tee $SITE_PATH/.env
+
+# 4. ###################
+# Install Bedrock dependencies
+########################
+
+echo -e "${BLUE}Installing dependencies${NC}"
+
+(cd $SITE_PATH && composer install)
 
 ########################
 # Done!

@@ -1,6 +1,5 @@
 {
     "name": "jk-plugin/plugin-name",
-    "type": "wordpress-plugin",
     "extra": {
         "installer-paths": {
             "plugin/": ["type:wordpress-plugin"]
