@@ -1,8 +1,8 @@
 {
     "name": "jk-plugin/plugin-name-1",
     "scripts": {
-        "post-package-install": "Aloo\\WordPress\\Installer\\WordPressPlugin::install",
-        "post-package-update": "Aloo\\WordPress\\Installer\\WordPressPlugin::update"
+        "post-package-install": "WordPressPlugin::install",
+        "post-package-update": "WordPressPlugin::update"
     },
     "extra": {
         "installer-paths": {
