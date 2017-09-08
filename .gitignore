@@ -1,2 +1,8 @@
-bedrock/*
-!bedrock/.gitkeep
+###########################
+# WordPress Plugin Template
+###########################
+
+## Development Environment
+.development/*
+
+## Plugin Files

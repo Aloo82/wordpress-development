@@ -5,13 +5,13 @@ services:
     ports:
      - "8080:80"
     volumes:
-     - ./bedrock:/usr/share/nginx/html
+     - ./.development/site:/usr/share/nginx/html
     networks:
      - wpnet
   php:
     image: hoangstark/bedrock-php:latest
     volumes:
-     - ./bedrock:/usr/share/nginx/html
+     - ./.development/site:/usr/share/nginx/html
      - ./plugin:/usr/share/nginx/html/web/app/plugins/plugin-dev
     networks:
      - wpnet
@@ -25,7 +25,7 @@ services:
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: secret
     volumes:
-     - ./bedrock/web/app/uploads/docker-mysqldb:/var/lib/mysql
+     - ./.development/data:/var/lib/mysql
     networks:
      - wpnet
 networks:

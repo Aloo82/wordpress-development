@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# 0. ###################
+# Config
+########################
+
+DEVELOPMENT_ROOT=./.development
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+# 1. ###########################
+# Create development environemnt
+################################
+
+echo -e "${BLUE}Creating development environemnt directories in ${DEVELOPMENT_ROOT}${NC}"
+
+mkdir $DEVELOPMENT_ROOT
+mkdir $DEVELOPMENT_ROOT/site
+mkdir $DEVELOPMENT_ROOT/data
+
+# 2. ###################
+# Clone Bedrock
+########################
+
+echo -e "${BLUE}Cloning Bedrock repository${NC}"
+
+git clone --depth=1 --branch=master git@github.com:roots/bedrock.git $DEVELOPMENT_ROOT/site
+
+# 3. ###################
+# Create .env file
+########################
+
+echo -e "${BLUE}Generating site config (.env)${NC}"
+
+sed "s/# DB_HOST=localhost/DB_HOST=mysql/" $DEVELOPMENT_ROOT/site/.env.example | tee $DEVELOPMENT_ROOT/site/.env
+
+########################
+# Done!
+########################
+
+echo -e "${GREEN}Done!${NC}"
