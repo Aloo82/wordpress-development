@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# 1. ###########################
+# Delete all git files
+################################
+
+find . | grep .git | xargs rm -rf
