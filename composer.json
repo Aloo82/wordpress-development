@@ -1,12 +1,15 @@
 {
     "name": "jk-plugin/plugin-name-1",
     "scripts": {
-        "post-package-install": "WordPressPlugin::install",
-        "post-package-update": "WordPressPlugin::update"
+        "post-install-cmd": "WordPressPlugin::install",
+        "post-update-cmd": "WordPressPlugin::update"
     },
     "extra": {
         "installer-paths": {
             "plugin/": ["type:wordpress-plugin"]
         }
+    },
+    "require": {
+        "jk-plugin/plugin-name-1": "dev-master"
     }
 }
