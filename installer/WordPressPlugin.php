@@ -9,4 +9,10 @@ class WordPressPlugin {
         $installedPackage = $event->getOperation()->getPackage();
         print_r($installedPackage);
     }
+
+    public static function update(PackageEvent $event)
+    {
+        $installedPackage = $event->getOperation()->getPackage();
+        print_r($installedPackage);
+    }
 }

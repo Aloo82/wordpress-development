@@ -6,7 +6,8 @@
         }
     },
     "scripts": {
-        "post-package-install": "WordPressPlugin::install"
+        "post-package-install": "WordPressPlugin::install",
+        "post-package-update": "WordPressPlugin::update"
     },
     "extra": {
         "installer-paths": {
