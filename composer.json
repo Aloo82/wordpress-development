@@ -1,7 +1,7 @@
 {
     "name": "jk-plugin/plugin-name",
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "Aloo\\WordPress\\Installer": "installer/"
         }
     },
