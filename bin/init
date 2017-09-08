@@ -39,11 +39,12 @@ git clone --depth=1 --branch=master git@github.com:roots/bedrock.git $SITE_PATH
 
 echo -e "${BLUE}Generating site config (.env)${NC}"
 
-# Set DB_HOST
-sed "s/# DB_HOST=localhost/DB_HOST=mysql/" $SITE_PATH/.env.example | tee $SITE_PATH/.env
-# Set WP_HOME
+cp $SITE_PATH/.env.example $SITE_PATH/.env
 WP_HOME="$(echo $SITE_HOME | sed 's|/|\\/|g')"
-sed "s/WP_HOME=http:\/\/example.com/WP_HOME=${WP_HOME}/" $SITE_PATH/.env | tee $SITE_PATH/.env
+# Set DB_HOST
+sed -i "" "s/# DB_HOST=localhost/DB_HOST=mysql/" $SITE_PATH/.env
+# Set WP_HOME
+sed -i "" "s/WP_HOME=http:\/\/example.com/WP_HOME=${WP_HOME}/" $SITE_PATH/.env
 
 # 4. ###################
 # Install Bedrock dependencies
