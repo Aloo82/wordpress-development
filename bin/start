@@ -10,7 +10,7 @@
 # Delete all git files
 ################################
 
-./bin/cleangit
+./bin/clean
 
 # 3. ###########################
 # Start docker
