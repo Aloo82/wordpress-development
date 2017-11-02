@@ -19,7 +19,7 @@ NC='\033[0m'
 # Create development environemnt
 ################################
 
-echo -e "${BLUE}Creating development environemnt directories in ${DEVELOPMENT_ROOT}${NC}"
+echo -e "${BLUE}Creating development environment directories in ${DEVELOPMENT_ROOT}${NC}"
 
 mkdir $DEVELOPMENT_ROOT
 mkdir $SITE_PATH
@@ -31,7 +31,7 @@ mkdir $DATA_PATH
 
 echo -e "${BLUE}Cloning Bedrock repository${NC}"
 
-git clone --depth=1 --branch=master git@github.com:roots/bedrock.git $SITE_PATH
+git clone --depth=1 --branch=master https://github.com/roots/bedrock.git $SITE_PATH
 
 # 3. ###################
 # Create .env file
