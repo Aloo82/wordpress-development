@@ -1,0 +1,69 @@
+#!/bin/bash
+# 0. ###################
+# Params
+########################
+VERSION="1.0"
+CONFIG_FILE="docker-compose.env"
+BEDROCK_REPO="https://github.com/roots/bedrock.git"
+
+# 1. ###################
+# Includes
+########################
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$DIR/inc/functions"
+
+function main {
+
+    newline
+    inform "################################ :"
+    inform "# WordPress Plugin Development # : Installer"
+    inform "################################ : v$VERSION"
+    newline
+
+    # 2. ###################
+    # Config
+    ########################
+    loadSettings "$(pwd)/$CONFIG_FILE"
+
+    # 3. ###########################
+    # Create development environment
+    ################################    
+    init
+
+    if [ "$RUN_SETUP" == "1" ]
+    then
+        # 4. ###################
+        # Install composer
+        ########################
+
+        # todo ...
+
+        # 5. ###################
+        # Clone Bedrock
+        ########################
+
+        cloneBedrock
+
+        # 6. ###################
+        # Create .env file
+        ########################
+
+        generateEnvFile
+
+        # 7. ###################
+        # Install Bedrock dependencies
+        ########################
+
+        installSite
+
+        ########################
+        # Done!
+        ########################
+
+        success "Done!"
+        success "Type ./bin/start and then visit $SITE_HOME in your browser"
+        newline
+    fi
+}
+
+main

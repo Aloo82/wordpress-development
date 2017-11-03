@@ -1,19 +1,18 @@
 #!/bin/bash
+# 0. ###################
+# Params
+########################
+CONFIG_FILE="docker-compose.env"
 
-# 1. ###########################
-# Initialise
-################################
+# 1. ###################
+# Includes
+########################
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$DIR/inc/functions"
 
-./bin/init
+# 2. ###################
+# Config
+########################
+loadSettings "$(pwd)/$CONFIG_FILE"
 
-# 2. ###########################
-# Delete all git files
-################################
-
-./bin/clean
-
-# 3. ###########################
-# Start docker
-################################
-
-./bin/up
+docker-compose up -d

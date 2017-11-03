@@ -1,0 +1,175 @@
+#!/bin/bash
+# 0.1. #################
+# Colours
+########################
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+LIGHTRED='\033[1;31m'
+LIGHTBLUE='\033[1;34m'
+NC='\033[0m'
+
+# Configure
+############
+# Description : Include configuration file
+# Arguments
+# --  $1 : Path to configuration file
+function loadSettings {
+    if [ -f $1 ]
+    then
+        inform "Loading environment variables [$1]"
+        export $(cat $1 | xargs)
+
+        local ready=1
+        for var in 'DEVELOPMENT_ROOT' 'SITE_DIR' 'DATA_DIR' 'HOSTNAME' 'PROTOCOL' 'PORT'
+        do 
+            if [ -z "${!var}" ]
+            then
+                error "$var not set ${!var}"
+                local ready=0
+            fi
+        done
+
+        if [ "$ready" -eq "1" ]
+        then
+            # Define site url
+            export SITE_HOME="$PROTOCOL://$HOSTNAME:$PORT"
+            # Full path to site directory
+            export SITE_PATH=$DEVELOPMENT_ROOT/$SITE_DIR
+            # Full path to data directory
+            export DATA_PATH=$DEVELOPMENT_ROOT/$DATA_DIR
+        else
+            error "Environment variable missing, able to proceed"
+            newline
+        fi
+    fi
+}
+
+# Init
+############
+# Description : Create environment directories
+function init {
+    if [ -d $DEVELOPMENT_ROOT ]
+    then
+        # Environment directory already exists
+        warning "Directory already exists [$DEVELOPMENT_ROOT]"
+        warning "Continuing will remove the existing directory"
+        newline
+        ask "Would you like to continue? [yes|no]" "proceed"
+        newline
+        
+        if [ "$proceed" == "yes" ]
+        then
+            rm -rf $DEVELOPMENT_ROOT
+            RUN_SETUP=1
+        fi
+    else
+        RUN_SETUP=1
+    fi
+
+    if [ "$RUN_SETUP" == "1" ]
+    then
+        inform "Creating development environment directories in ${DEVELOPMENT_ROOT}"
+        mkdir $DEVELOPMENT_ROOT
+        mkdir $SITE_PATH
+        mkdir $DATA_PATH
+    fi
+}
+
+function cloneBedrock() {
+    inform "Cloning Bedrock repository"
+    newline
+    git clone --depth=1 --branch=master $BEDROCK_REPO $SITE_PATH
+    newline
+}
+
+# generateEnvFile
+############
+# Description : Generate .env file for bedrock
+function generateEnvFile {
+    inform "Generating site config (.env)"
+    
+    cp $SITE_PATH/.env.example $SITE_PATH/.env
+    WP_HOME="$(echo $SITE_HOME | sed 's|/|\\/|g')"
+    # Set DB_HOST
+    sed -i "" "s/# DB_HOST=localhost/DB_HOST=mysql/" $SITE_PATH/.env
+    # Set WP_HOME
+    sed -i "" "s/WP_HOME=http:\/\/example.com/WP_HOME=${WP_HOME}/" $SITE_PATH/.env
+}
+
+# installSite
+############
+# Description : Install site with composer
+function installSite {
+    inform "Installing site dependencies"
+    newline
+
+    (cd $SITE_PATH && composer install)
+    newline
+}
+
+# Ask
+############
+# Description : Ask user question
+# Arguments
+# --  $1 : Question text
+# --  $2 : (optional) variable name
+function ask {
+    echo -e "${CYAN}Input: ${1}${NC}:"
+    read response
+
+    local __resultvar=$2
+
+    if [ ! -z "$__resultvar" ]
+    then
+        eval $__resultvar="'$response'"
+    else
+        echo "$response"
+    fi
+}
+
+# Inform
+############
+# Description : Display information
+# Arguments
+# --  $1 : Text to display
+function inform {
+    echo -e "${LIGHTBLUE}Info: ${1}${NC}"
+}
+
+# Error
+############
+# Description : Report error
+# Arguments
+# --  $1 : Text to display
+function error {
+    echo -e "${LIGHTRED}Error: ${1}${NC}"
+}
+
+# Warning
+############
+# Description : Display warning
+# Arguments
+# --  $1 : Text to display
+function warning {
+    echo -e "${ORANGE}Warning: ${1}${NC}"
+}
+
+# Success
+############
+# Description : Display success message
+# Arguments
+# --  $1 : Text to display
+function success {
+    echo -e "${GREEN}Success: ${1}${NC}"
+}
+
+# Newline
+############
+# Description : Display new line
+function newline {
+    echo -e ""
+}

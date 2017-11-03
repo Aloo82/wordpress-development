@@ -3,7 +3,7 @@ services:
   nginx:
     image: hoangstark/bedrock-nginx:latest
     ports:
-     - "8080:80"
+     - "${PORT}:80"
     volumes:
      - ./.development/site:/usr/share/nginx/html
     networks:

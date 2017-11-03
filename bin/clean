@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# 1. ###########################
-# Delete all git files
-################################
-
-rm -rf ./.git
-rm -f ./.plugin/.gitkeep
-rm -f ./.theme/.gitkeep
